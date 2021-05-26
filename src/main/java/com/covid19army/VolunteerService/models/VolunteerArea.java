@@ -2,6 +2,9 @@ package com.covid19army.VolunteerService.models;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.covid19army.VolunteerService.modelListeners.VolunteerAreaModelListener;
+
 import java.util.Date;
 
 
@@ -9,6 +12,7 @@ import java.util.Date;
  * The persistent class for the volunteerareas database table.
  * 
  */
+@EntityListeners(VolunteerAreaModelListener.class)
 @Entity
 @Table(name="volunteerareas")
 @NamedQuery(name="VolunteerArea.findAll", query="SELECT v FROM VolunteerArea v")

@@ -11,8 +11,6 @@ public class VolunteerDto {
 	private String contactname;
 
 	private String contactnumber;
-
-	private int countrycode;
 	
 	private String district;
 	
@@ -50,14 +48,6 @@ public class VolunteerDto {
 
 	public void setContactnumber(String contactnumber) {
 		this.contactnumber = contactnumber;
-	}
-
-	public int getCountrycode() {
-		return countrycode;
-	}
-
-	public void setCountrycode(int countrycode) {
-		this.countrycode = countrycode;
 	}
 
 	public String getDistrict() {
@@ -108,11 +98,11 @@ public class VolunteerDto {
 		this.needs = needs;
 	}
 
-	public List<VolunteerAreaDto> getAreas() {
+	public List<VolunteerAreaDto> getVolunteerareas() {
 		return volunteerareas;
 	}
 
-	public void setAreas(List<VolunteerAreaDto> volunteerareas) {
+	public void setVolunteerareas(List<VolunteerAreaDto> volunteerareas) {
 		this.volunteerareas = volunteerareas;
 	}
 	
