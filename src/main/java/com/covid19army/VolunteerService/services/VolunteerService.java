@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,11 @@ import com.covid19army.VolunteerService.models.Volunteer;
 import com.covid19army.VolunteerService.models.VolunteerArea;
 import com.covid19army.VolunteerService.models.VolunteerProvidedNeed;
 import com.covid19army.VolunteerService.repositories.VolunteerRepository;
+import com.covid19army.core.dtos.MobileVerificationQueueDto;
 import com.covid19army.core.dtos.PagedResponseDto;
 import com.covid19army.core.enums.NeedsEnum;
 import com.covid19army.core.extensions.HttpServletRequestExtension;
+import com.covid19army.core.mex.rabbitmq.RabbitMQSender;
 
 @Service
 public class VolunteerService {
@@ -32,6 +35,10 @@ public class VolunteerService {
 	
 	@Autowired
 	VolunteerRepository _volunteerRepository;
+	
+	@Autowired
+	@Qualifier("otpExchangeSender")
+	RabbitMQSender _otpExchangeSender;
 	
 	public long createVolunteer(VolunteerDto dto) {
 		
@@ -51,6 +58,13 @@ public class VolunteerService {
 		volunteerModel.setVolunteerareas(areas);
 		volunteerModel.setVolunteerprovidedneeds(needsList);
 		_volunteerRepository.save(volunteerModel);
+		
+		MobileVerificationQueueDto otpdto = new MobileVerificationQueueDto();
+		otpdto.setMobilenumber(volunteerModel.getContactnumber());
+		otpdto.setEntityid(volunteerModel.getVolunteerid());
+		otpdto.setEntitytype("VTR");
+		_otpExchangeSender.<MobileVerificationQueueDto>send(otpdto);
+		
 		return volunteerModel.getVolunteerid();
 	}
 	
@@ -78,6 +92,20 @@ public class VolunteerService {
 		responseDto.setTotalItems(volunteerPage.getTotalElements());
 		responseDto.setTotalPages(volunteerPage.getTotalPages());
 		responseDto.setData(volunteerResponseDtoList);
+		return responseDto;
+	}
+	
+	public PagedResponseDto<Long> getVolunteerIdsBasedOnAreaAndNeed(VolunteerSearchDto searchDto, Pageable pageable){
+		Page<Long> volunteerPage = _volunteerRepository.findVolunteerIdByVolunteerAreaAndNeeds(searchDto.getState(),
+				searchDto.getDistrict(), searchDto.getPincode(), searchDto.getNeeds(), pageable);
+		
+		
+		
+		PagedResponseDto<Long> responseDto = new PagedResponseDto<>();
+		responseDto.setCurrentPage(volunteerPage.getNumber());
+		responseDto.setTotalItems(volunteerPage.getTotalElements());
+		responseDto.setTotalPages(volunteerPage.getTotalPages());
+		responseDto.setData(volunteerPage.getContent());
 		return responseDto;
 	}
 	

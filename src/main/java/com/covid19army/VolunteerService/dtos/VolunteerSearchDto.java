@@ -1,10 +1,25 @@
 package com.covid19army.VolunteerService.dtos;
 
+import java.util.List;
+
+import com.covid19army.core.enums.NeedsEnum;
+
 public class VolunteerSearchDto {
 
 	private String state;
 	private String district;
 	private String pincode;
+	
+	private List<NeedsEnum> needs;
+	
+	
+	
+	public List<NeedsEnum> getNeeds() {
+		return needs;
+	}
+	public void setNeeds(List<NeedsEnum> needs) {
+		this.needs = needs;
+	}
 	public String getState() {
 		return state;
 	}
