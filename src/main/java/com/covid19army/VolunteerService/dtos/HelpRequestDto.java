@@ -56,9 +56,6 @@ public class HelpRequestDto {
 	}
 	public void setRequestneeds(List<RequestNeedDto> requestneeds) {
 		this.requestneeds = requestneeds;
-		this.setNeeds(requestneeds.stream()
-				.map(RequestNeedDto::getNeedid)
-				.collect(Collectors.toList()));
 	}
 	
 	public List<NeedsEnum> getNeeds(){

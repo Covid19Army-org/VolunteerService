@@ -16,6 +16,7 @@ import com.covid19army.VolunteerService.models.NewRequestWaitingQueue;
 import com.covid19army.VolunteerService.services.NewRequestWaitingQueueService;
 import com.covid19army.VolunteerService.services.VolunteerService;
 import com.covid19army.core.dtos.PagedResponseDto;
+import com.covid19army.core.dtos.RequestVolutneerStatusDto;
 
 
 @Component
@@ -40,5 +41,10 @@ public class RabbitMQConsumer {
 		for(long volunteerId : voluteerPage.getData()) {
 			_newRequestWaitingQueue.createQueueItem(message.getRequestid(), volunteerId);
 		}
+	}
+	
+	@RabbitListener(queues = "${covid19army.rabbitmq.newrequestacceptrejectqueue}")
+	public void requestVolunteerStatusMessageListener(RequestVolutneerStatusDto message) {
+		_newRequestWaitingQueue.processRequestVolunteerStatus(message);
 	}
 }

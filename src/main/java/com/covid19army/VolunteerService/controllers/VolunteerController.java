@@ -1,5 +1,7 @@
 package com.covid19army.VolunteerService.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +31,12 @@ public class VolunteerController {
 		return _volunteerService.createVolunteer(volunteerDto);		
 	}
 	
-	@PostMapping("/search")
+	@PostMapping("/searchbyids")
+	public List<VolunteerResponseDto> getVolunteerByIds(@RequestBody List<Long> volunteerIds){
+		return _volunteerService.getVolunteerByIds(volunteerIds);
+	}
+	
+ 	@PostMapping("/search")
 	public PagedResponseDto<VolunteerResponseDto> searchVolunteer(@RequestBody VolunteerSearchDto searchDto, 
 			@RequestParam(defaultValue = "0") int page, 
 			@RequestParam(defaultValue = "50") int size ) {

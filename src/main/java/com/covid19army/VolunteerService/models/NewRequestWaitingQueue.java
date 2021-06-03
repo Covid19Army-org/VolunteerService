@@ -11,6 +11,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name="newrequestwaitingqueue")
 @NamedQuery(name="NewRequestWaitingQueue.findAll", query="SELECT n FROM NewRequestWaitingQueue n")
 public class NewRequestWaitingQueue implements Serializable {
 	private static final long serialVersionUID = 1L;

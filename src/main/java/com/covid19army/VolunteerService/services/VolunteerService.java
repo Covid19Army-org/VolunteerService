@@ -2,7 +2,9 @@ package com.covid19army.VolunteerService.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,10 @@ public class VolunteerService {
 	@Autowired
 	@Qualifier("otpExchangeSender")
 	RabbitMQSender _otpExchangeSender;
+	
+	public Optional<Volunteer> getVolunteerById(long volunteerid) {
+		return  _volunteerRepository.findById(volunteerid);
+	}
 	
 	public long createVolunteer(VolunteerDto dto) {
 		
@@ -107,6 +113,15 @@ public class VolunteerService {
 		responseDto.setTotalPages(volunteerPage.getTotalPages());
 		responseDto.setData(volunteerPage.getContent());
 		return responseDto;
+	}
+	
+	public List<VolunteerResponseDto> getVolunteerByIds(List<Long> vounteerIds){
+		Iterable<Volunteer> volunteerList =   _volunteerRepository.findAllById(vounteerIds);
+		var volunteerDtoList = StreamSupport.stream(volunteerList.spliterator(), false)
+		.map(v-> _mapper.map(v, VolunteerResponseDto.class))
+		.collect(Collectors.toList());
+		
+		return volunteerDtoList;
 	}
 	
 	private VolunteerArea updateVolunter(VolunteerArea volunteerArea, Volunteer volunteer) {

@@ -7,4 +7,6 @@ import com.covid19army.VolunteerService.models.RequestVolunteer;
 
 public interface NewRequestWaitingQueueRepository extends PagingAndSortingRepository<NewRequestWaitingQueue, Long> {
 
+	void deleteByRequestid(long requestid);
+	void deleteByRequestidAndVolunteerid(long requestid, long volunteerid);
 }
