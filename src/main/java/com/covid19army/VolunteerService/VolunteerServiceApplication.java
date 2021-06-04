@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import com.covid19army.core.common.clients.OtpServiceClient;
+import com.covid19army.core.exceptions.GlobalExceptionHandler;
 import com.covid19army.core.extensions.HttpServletRequestExtension;
 import com.covid19army.core.mex.rabbitmq.RabbitMQConfig;
 import com.covid19army.core.mex.rabbitmq.RabbitMQListenerConfig;
@@ -18,7 +19,7 @@ import com.covid19army.core.mex.rabbitmq.RabbitMQSender;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(clients = {OtpServiceClient.class})
-@Import({RabbitMQConfig.class, RabbitMQListenerConfig.class})
+@Import({RabbitMQConfig.class, RabbitMQListenerConfig.class, GlobalExceptionHandler.class})
 public class VolunteerServiceApplication {
 
 	public static void main(String[] args) {

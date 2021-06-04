@@ -2,6 +2,8 @@ package com.covid19army.VolunteerService.services;
 
 import java.util.Date;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +32,7 @@ public class NewRequestWaitingQueueService {
 		
 		return newModel.getItemid();
 	}
-	
+		
 	public void processRequestVolunteerStatus(RequestVolutneerStatusDto dto) {
 	
 		if(dto.isIsaccepted()) {
@@ -40,12 +42,13 @@ public class NewRequestWaitingQueueService {
 		}
 	}
 	
+	
 	private void processAccept(long requestid, long volunteerid) {
 		var optionalVolunteer = _volunteerRepository.findById(volunteerid);
 		if(optionalVolunteer.isPresent()) {
 			_newRequestWaitingQueueRepository.deleteByRequestid(requestid);
 		}
-	}
+	}	
 	
 	private void processReject(long requestid, long volunteerid) {
 		_newRequestWaitingQueueRepository.deleteByRequestidAndVolunteerid(requestid, volunteerid);
