@@ -23,6 +23,7 @@ import com.covid19army.VolunteerService.repositories.VolunteerRepository;
 import com.covid19army.core.dtos.MobileVerificationQueueDto;
 import com.covid19army.core.dtos.PagedResponseDto;
 import com.covid19army.core.enums.NeedsEnum;
+import com.covid19army.core.exceptions.ResourceNotFoundException;
 import com.covid19army.core.extensions.HttpServletRequestExtension;
 import com.covid19army.core.mex.rabbitmq.RabbitMQSender;
 
@@ -122,6 +123,17 @@ public class VolunteerService {
 		.collect(Collectors.toList());
 		
 		return volunteerDtoList;
+	}
+	
+	public void updateMobileVerified(long requestId, boolean isVerified) throws ResourceNotFoundException {
+		Optional<Volunteer> helpRequest =  _volunteerRepository.findById(requestId);
+		if(helpRequest.isPresent()) {
+			var model = helpRequest.get();
+			model.setIscontactverified(isVerified);
+			_volunteerRepository.save(model);
+			
+		}
+		throw new ResourceNotFoundException("Invalid volunteer Id");
 	}
 	
 	private VolunteerArea updateVolunter(VolunteerArea volunteerArea, Volunteer volunteer) {

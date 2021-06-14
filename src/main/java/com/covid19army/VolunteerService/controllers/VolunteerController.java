@@ -17,7 +17,10 @@ import com.covid19army.VolunteerService.dtos.VolunteerDto;
 import com.covid19army.VolunteerService.dtos.VolunteerResponseDto;
 import com.covid19army.VolunteerService.dtos.VolunteerSearchDto;
 import com.covid19army.VolunteerService.services.VolunteerService;
+import com.covid19army.core.common.clients.OtpServiceClient;
+import com.covid19army.core.dtos.OtpVerificationRequestDto;
 import com.covid19army.core.dtos.PagedResponseDto;
+import com.covid19army.core.exceptions.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("volunteer")
@@ -25,6 +28,9 @@ public class VolunteerController {
 
 	@Autowired
 	VolunteerService _volunteerService;
+	
+	@Autowired
+	OtpServiceClient _otpServiceClient;
 	
 	@PostMapping
 	public long createVolunteer(@RequestBody VolunteerDto volunteerDto) {
@@ -50,5 +56,18 @@ public class VolunteerController {
 			@RequestParam(defaultValue = "100") int size ) {
 		Pageable pageable = PageRequest.of(page, size,Sort.by(Sort.Direction.DESC, "dateCreated"));
 		return _volunteerService.getVolunteerIdsBasedOnArea(searchDto, pageable);		
+	}
+	
+	@PostMapping("/validateotp")
+	public boolean validateOtp(@RequestBody OtpVerificationRequestDto otpRequestDto) 
+			throws ResourceNotFoundException{
+		
+		var result = _otpServiceClient.validateOtp(otpRequestDto);
+		if(result) {
+			_volunteerService.updateMobileVerified(otpRequestDto.getEntityid(), true);
+		}
+		
+		throw new ResourceNotFoundException("Invaid Otp.");
+		
 	}
 }
