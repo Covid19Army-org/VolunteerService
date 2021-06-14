@@ -127,13 +127,14 @@ public class VolunteerService {
 	
 	public void updateMobileVerified(long requestId, boolean isVerified) throws ResourceNotFoundException {
 		Optional<Volunteer> helpRequest =  _volunteerRepository.findById(requestId);
-		if(helpRequest.isPresent()) {
-			var model = helpRequest.get();
-			model.setIscontactverified(isVerified);
-			_volunteerRepository.save(model);
-			
+		if(helpRequest.isEmpty()) {
+
+			throw new ResourceNotFoundException("Invalid volunteer Id");
 		}
-		throw new ResourceNotFoundException("Invalid volunteer Id");
+		var model = helpRequest.get();
+		model.setIscontactverified(isVerified);
+		_volunteerRepository.save(model);
+		
 	}
 	
 	private VolunteerArea updateVolunter(VolunteerArea volunteerArea, Volunteer volunteer) {
