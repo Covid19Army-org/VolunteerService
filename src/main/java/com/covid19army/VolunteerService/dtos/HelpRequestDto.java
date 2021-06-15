@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.covid19army.core.enums.HelpRequestStatusEnum;
 import com.covid19army.core.enums.NeedsEnum;
 
 public class HelpRequestDto {
@@ -30,7 +31,7 @@ public class HelpRequestDto {
 
 	private String state;
 
-	private int status;
+	private HelpRequestStatusEnum status;
 	
 	List<NeedsEnum> needs;
 	
@@ -154,11 +155,11 @@ public class HelpRequestDto {
 		this.state = state;
 	}
 
-	public int getStatus() {
+	public HelpRequestStatusEnum getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(HelpRequestStatusEnum status) {
 		this.status = status;
 	}
 	
