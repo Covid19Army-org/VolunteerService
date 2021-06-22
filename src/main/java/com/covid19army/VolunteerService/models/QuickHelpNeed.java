@@ -34,6 +34,13 @@ public class QuickHelpNeed implements Serializable {
 	
 	@Enumerated(EnumType.ORDINAL)
 	private NeedsEnum needid;
+	
+	public QuickHelpNeed() {}
+	
+	public QuickHelpNeed(NeedsEnum need, QuickHelp quickHelp) {
+		this.quickhelp = quickHelp;
+		this.needid = need;
+	}
 
 	public long getQuickhelpneedid() {
 		return quickhelpneedid;
