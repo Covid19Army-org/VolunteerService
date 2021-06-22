@@ -40,6 +40,15 @@ public class HelpRequestDto {
 	Date dateCreated;
 	boolean iscontactverified;	
 	
+	long userid;	
+	
+	public long getUserid() {
+		return userid;
+	}
+	public void setUserid(long userid) {
+		this.userid = userid;
+	}
+	
 	public Date getDateCreated() {
 		return dateCreated;
 	}

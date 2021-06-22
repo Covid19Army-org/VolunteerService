@@ -39,7 +39,7 @@ public class RabbitMQConsumer {
 		VolunteerSearchDto searchDto = _mapper.map(message, VolunteerSearchDto.class);
 		PagedResponseDto<Long> voluteerPage = _volunteerService.getVolunteerIdsBasedOnAreaAndNeed(searchDto, pageable);
 		for(long volunteerId : voluteerPage.getData()) {
-			_newRequestWaitingQueue.createQueueItem(message.getRequestid(), volunteerId);
+			_newRequestWaitingQueue.createQueueItem(message.getRequestid(), volunteerId, message.getUserid());
 		}
 	}
 	

@@ -43,5 +43,13 @@ public class VolunteerServiceApplication {
 		return new RabbitMQSender(otpexchange, routingkey);
 		
 	}
+	
+	@Bean
+	public RabbitMQSender activitylogExchangeSender(
+			@Value("${covid19army.rabbitmq.activitylogexchange}") final String activitylogExchange,
+			@Value("${covid19army.rabbitmq.activitylogexchange.routingkey:}") final String routingkey) {
+		return new RabbitMQSender(activitylogExchange, routingkey);
+		
+	}
 
 }
